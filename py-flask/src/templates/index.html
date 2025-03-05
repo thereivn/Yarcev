@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Вентилятором</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        #status, #speed, #rotation {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Управление Вентилятором</h1>
+    <button onclick="sendRequest('vklyuchit')">Включить</button>
+    <button onclick="sendRequest('uvelichit')">Увеличить скорость</button>
+    <button onclick="sendRequest('umenshit')">Уменьшить скорость</button>
+    <button onclick="sendRequest('vyklyuchit')">Выключить</button>
+    <button onclick="sendRequest('povorot')">Поворот</button>
+    
+    <div id="status">Статус вентилятора: Выключен</div>
+    <div id="speed">Скорость: Выключен</div>
+    <div id="rotation">Поворот: Выключен</div>
+
+    <script>
+        function updateStatus(status) {
+            document.getElementById('status').innerText = 'Статус вентилятора: ' + status;
+        }
+
+        function updateSpeed(speed) {
+            document.getElementById('speed').innerText = 'Скорость: ' + speed;
+        }
+
+        function updateRotation(rotation) {
+            document.getElementById('rotation').innerText = 'Поворот: ' + rotation;
+        }
+
+        function sendRequest(action) {
+            fetch(`/${action}`)
+                .then(response => response.json())
+                .then(data => {
+                    updateStatus(data.status);
+                    updateSpeed(data.speed);
+                    updateRotation(data.rotation);
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
+    </script>
+</body>
+</html>
